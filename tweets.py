@@ -125,16 +125,17 @@ def count_words(text: str, words_count: Dict[str, int]) -> None:
     True
 
     """
-    tweet_words = text.strip().split()
-    for i in range(len(tweet_words)):
-        if (tweet_words[i].startswith(HASH_SYMBOL) or
-                tweet_words[i].startswith(MENTION_SYMBOL) or
-                tweet_words[i].lower().startswith(URL_START)):
-            continue
-        else:
-            tweet_words[i] = clean_word(tweet_words[i])
-            if len(tweet_words[i]) > 0:
-                words_count[tweet_words[i]] = words_count.get(tweet_words[i], 0) + 1        
+    empty = {}
+    split_t = text.split(" ")
+    for i in range(len(split_t)):
+        if not(HASH_SYMBOL in split_t[i]) and not(MENTION_SYMBOL in split_t[i]) and not(URL_START in split_t[i]):
+                    if split_t[i] not in empty:
+                        empty[clean_word(split_t[i])] = 1
+                    else:
+                        empty[clean_word(split_t[i])] = empty[clean_word(split_t[i])] +1
+    words_count.clear()
+    for j in empty:
+        words_count[j]=empty[j]      
         
               
 
